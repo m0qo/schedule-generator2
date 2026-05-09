@@ -13,13 +13,22 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Plus, Package } from 'lucide-react';
+import { Plus, Package, CalendarDays } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { ScheduleBlockCard } from './ScheduleBlockCard';
 import { useScheduleStore } from '@/store/scheduleStore';
-import { DAYS_OF_WEEK } from '@/types/schedule';
+
+const RU_WEEKDAY_FORMATTER = new Intl.DateTimeFormat('ru-RU', { weekday: 'long' });
+
+function dayOfWeekFromDate(date: string): string {
+  if (!date) return '';
+  const d = new Date(date + 'T00:00:00');
+  if (Number.isNaN(d.getTime())) return '';
+  const raw = RU_WEEKDAY_FORMATTER.format(d);
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+}
 
 export const ScheduleEditor: React.FC = () => {
   const {
@@ -30,6 +39,15 @@ export const ScheduleEditor: React.FC = () => {
     addAssemblyBlock,
     reorderBlocks,
   } = useScheduleStore();
+
+  const computedDayOfWeek = dayOfWeekFromDate(schedule.date);
+
+  // Keep stored dayOfWeek in sync with the date in case an older record had a stale value.
+  useEffect(() => {
+    if (computedDayOfWeek && schedule.dayOfWeek !== computedDayOfWeek) {
+      updateDayOfWeek(computedDayOfWeek);
+    }
+  }, [computedDayOfWeek, schedule.dayOfWeek, updateDayOfWeek]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -61,34 +79,34 @@ export const ScheduleEditor: React.FC = () => {
   }, [addBlock, addAssemblyBlock]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* Date & Day Header */}
-      <div className="flex items-end gap-4 p-4 rounded-lg bg-muted/50 border">
-        <div>
-          <Label className="text-xs text-muted-foreground">Дата</Label>
+      <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] sm:items-end gap-3 p-3 sm:p-4 rounded-lg bg-muted/50 border">
+        <div className="space-y-1.5">
+          <Label htmlFor="schedule-date" className="text-xs text-muted-foreground">Дата</Label>
           <Input
+            id="schedule-date"
             type="date"
             value={schedule.date}
             onChange={e => {
               updateDate(e.target.value);
-              const d = new Date(e.target.value + 'T00:00:00');
-              const dayIndex = (d.getDay() + 6) % 7;
-              updateDayOfWeek(DAYS_OF_WEEK[dayIndex]);
+              const next = dayOfWeekFromDate(e.target.value);
+              if (next) updateDayOfWeek(next);
             }}
-            className="h-9 w-44"
+            className="h-11 sm:h-10 text-base sm:text-sm w-full sm:w-44"
           />
         </div>
-        <div>
+        <div className="space-y-1.5">
           <Label className="text-xs text-muted-foreground">День недели</Label>
-          <select
-            value={schedule.dayOfWeek}
-            onChange={e => updateDayOfWeek(e.target.value)}
-            className="flex h-9 w-44 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          <div
+            className="inline-flex h-11 sm:h-10 items-center gap-2 rounded-md border border-input bg-background px-3 text-base sm:text-sm text-foreground"
+            aria-live="polite"
           >
-            {DAYS_OF_WEEK.map(day => (
-              <option key={day} value={day}>{day}</option>
-            ))}
-          </select>
+            <CalendarDays className="h-4 w-4 text-muted-foreground" />
+            <span className="font-medium">
+              {computedDayOfWeek || schedule.dayOfWeek || '—'}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -102,16 +120,16 @@ export const ScheduleEditor: React.FC = () => {
       </DndContext>
 
       {/* Add Block Buttons */}
-      <div className="flex gap-2">
-        <Button onClick={addBlock} variant="outline" className="flex-1">
+      <div className="flex flex-col sm:flex-row gap-2">
+        <Button onClick={addBlock} variant="outline" className="flex-1 h-11">
           <Plus className="h-4 w-4 mr-2" />
           Добавить блок
-          <span className="ml-2 text-xs text-muted-foreground">(Ctrl+B)</span>
+          <span className="hidden md:inline ml-2 text-xs text-muted-foreground">(Ctrl+B)</span>
         </Button>
-        <Button onClick={addAssemblyBlock} variant="outline" className="flex-1">
+        <Button onClick={addAssemblyBlock} variant="outline" className="flex-1 h-11">
           <Package className="h-4 w-4 mr-2" />
           Добавить сборку
-          <span className="ml-2 text-xs text-muted-foreground">(Ctrl+M)</span>
+          <span className="hidden md:inline ml-2 text-xs text-muted-foreground">(Ctrl+M)</span>
         </Button>
       </div>
     </div>

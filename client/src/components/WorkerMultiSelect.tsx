@@ -28,15 +28,15 @@ export const WorkerMultiSelect: React.FC<Props> = ({ values, onChange, placehold
   };
 
   return (
-    <div className="space-y-1">
-      <div className="flex flex-wrap items-center gap-1 min-h-[32px] rounded-md border border-input bg-background px-2 py-1">
+    <div className="space-y-1.5">
+      <div className="flex flex-wrap items-center gap-1.5 min-h-[40px] rounded-md border border-input bg-background px-2 py-1.5">
         {values.length === 0 && (
           <span className="text-sm text-muted-foreground">{placeholder ?? 'Никого не выбрано'}</span>
         )}
         {values.map((name, idx) => (
           <span
             key={`${name}-${idx}`}
-            className="inline-flex items-center gap-1 rounded bg-orange-100 text-orange-900 text-xs px-2 py-0.5"
+            className="inline-flex items-center gap-1 rounded bg-orange-100 text-orange-900 text-sm px-2 py-1"
           >
             {name}
             <Button
@@ -44,9 +44,10 @@ export const WorkerMultiSelect: React.FC<Props> = ({ values, onChange, placehold
               variant="ghost"
               size="icon"
               onClick={() => remove(idx)}
-              className="h-4 w-4 hover:bg-orange-200 text-orange-900"
+              className="h-6 w-6 hover:bg-orange-200 text-orange-900"
+              aria-label={`Убрать ${name}`}
             >
-              <X className="h-3 w-3" />
+              <X className="h-3.5 w-3.5" />
             </Button>
           </span>
         ))}
@@ -57,7 +58,7 @@ export const WorkerMultiSelect: React.FC<Props> = ({ values, onChange, placehold
           add(e.target.value);
           e.target.value = '';
         }}
-        className="flex h-8 w-full rounded-md border border-input bg-background px-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        className="flex h-10 w-full rounded-md border border-input bg-background px-2 text-base sm:text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       >
         <option value="">+ Добавить работника…</option>
         {sorted.map(w => (

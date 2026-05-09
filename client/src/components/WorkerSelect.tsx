@@ -27,7 +27,7 @@ export const WorkerSelect: React.FC<Props> = ({ value, onChange, placeholder, cl
       onChange={e => onChange(e.target.value)}
       className={
         className ??
-        'flex h-8 w-full rounded-md border border-input bg-background px-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+        'flex h-10 w-full rounded-md border border-input bg-background px-2 text-base sm:text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
       }
     >
       <option value="">{placeholder ?? '—'}</option>
