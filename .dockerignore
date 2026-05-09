@@ -1,0 +1,17 @@
+**/node_modules
+**/dist
+**/build
+**/.vite
+**/.env
+**/.env.local
+.git
+.github
+.vscode
+.idea
+*.log
+**/coverage
+client/public/.DS_Store
+.dockerignore
+Dockerfile
+fly.toml
+README.md
