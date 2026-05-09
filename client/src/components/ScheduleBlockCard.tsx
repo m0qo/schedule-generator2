@@ -40,19 +40,30 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground">
+                <button
+                  {...attributes}
+                  {...listeners}
+                  className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground p-2 -m-2 touch-none"
+                  aria-label="Перетащить блок"
+                >
                   <GripVertical className="h-5 w-5" />
                 </button>
                 <span className="font-semibold text-amber-800">Сборка</span>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => removeBlock(block.id)} className="h-8 w-8 text-destructive">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => removeBlock(block.id)}
+                className="h-10 w-10 text-destructive"
+                aria-label="Удалить блок"
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-3">
-              <div className="flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-[1fr_8rem] gap-3">
+              <div className="space-y-1">
                 <Label className="text-xs text-muted-foreground">Работник</Label>
                 <WorkerSelect
                   value={block.assemblyWorker}
@@ -60,13 +71,14 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
                   placeholder="—"
                 />
               </div>
-              <div className="w-28">
+              <div className="space-y-1">
                 <Label className="text-xs text-muted-foreground">Время</Label>
                 <Input
                   value={block.assemblyTime}
                   onChange={e => updateBlock(block.id, { assemblyTime: e.target.value })}
                   placeholder="14.30"
-                  className="h-8 text-sm"
+                  className="h-10 text-base sm:text-sm"
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -82,35 +94,46 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground">
+              <button
+                {...attributes}
+                {...listeners}
+                className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground p-2 -m-2 touch-none"
+                aria-label="Перетащить блок"
+              >
                 <GripVertical className="h-5 w-5" />
               </button>
               <span className="font-semibold text-sm text-muted-foreground">Блок {block.order}</span>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => removeBlock(block.id)} className="h-8 w-8 text-destructive">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => removeBlock(block.id)}
+              className="h-10 w-10 text-destructive"
+              aria-label="Удалить блок"
+            >
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Title & Work Type */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Название</Label>
               <Input
                 value={block.title}
                 onChange={e => updateBlock(block.id, { title: e.target.value })}
                 placeholder="1 разделка"
-                className="h-8 text-sm"
+                className="h-10 text-base sm:text-sm"
               />
             </div>
-            <div>
+            <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Тип работы</Label>
               <Input
                 value={block.workType}
                 onChange={e => updateBlock(block.id, { workType: e.target.value })}
                 placeholder="служебные"
-                className="h-8 text-sm"
+                className="h-10 text-base sm:text-sm"
               />
             </div>
           </div>
@@ -118,26 +141,28 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
           {/* Knead Section */}
           <div className="rounded-md border p-3 bg-blue-50/50">
             <Label className="text-xs font-semibold text-blue-700 mb-2 block">Замес</Label>
-            <div className="grid grid-cols-3 gap-2">
-              <div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="space-y-1">
                 <Label className="text-xs text-muted-foreground">Время</Label>
                 <Input
                   value={block.kneadTime}
                   onChange={e => updateBlock(block.id, { kneadTime: e.target.value })}
                   placeholder="6.10"
-                  className="h-8 text-sm"
+                  className="h-10 text-base sm:text-sm"
+                  inputMode="decimal"
                 />
               </div>
-              <div>
+              <div className="space-y-1">
                 <Label className="text-xs text-muted-foreground">Кол-во</Label>
                 <Input
                   value={block.kneadCount}
                   onChange={e => updateBlock(block.id, { kneadCount: e.target.value })}
                   placeholder="5"
-                  className="h-8 text-sm"
+                  className="h-10 text-base sm:text-sm"
+                  inputMode="numeric"
                 />
               </div>
-              <div>
+              <div className="col-span-2 sm:col-span-1 space-y-1">
                 <Label className="text-xs text-muted-foreground">Работник</Label>
                 <WorkerSelect
                   value={block.kneadWorker}
@@ -150,22 +175,28 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
 
           {/* Cutting Section */}
           <div className="rounded-md border p-3 bg-green-50/50">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-2 gap-2">
               <Label className="text-xs font-semibold text-green-700">Разделка</Label>
-              <Button variant="ghost" size="sm" onClick={() => addWorker(block.id)} className="h-6 px-2 text-xs text-green-700">
-                <Plus className="h-3 w-3 mr-1" /> Работник
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => addWorker(block.id)}
+                className="h-9 px-2 text-xs text-green-700 hover:bg-green-100"
+              >
+                <Plus className="h-3.5 w-3.5 mr-1" /> Работник
               </Button>
             </div>
-            <div className="mb-2">
+            <div className="mb-3 space-y-1">
               <Label className="text-xs text-muted-foreground">Начало</Label>
               <Input
                 value={block.cuttingStartTime}
                 onChange={e => updateBlock(block.id, { cuttingStartTime: e.target.value })}
                 placeholder="8.00"
-                className="h-8 text-sm w-32"
+                className="h-10 text-base sm:text-sm w-full sm:w-32"
+                inputMode="decimal"
               />
             </div>
-            <div className="space-y-1">
+            <div className="space-y-2">
               {block.cuttingWorkers.map(worker => {
                 const others = block.cuttingWorkers
                   .filter(w => w.id !== worker.id)
@@ -173,8 +204,8 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
                   .filter(Boolean);
                 return (
                   <div key={worker.id} className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground w-5 text-right">{worker.position}</span>
-                    <div className="flex-1">
+                    <span className="text-xs text-muted-foreground w-6 text-right shrink-0">{worker.position}</span>
+                    <div className="flex-1 min-w-0">
                       <WorkerSelect
                         value={worker.name}
                         onChange={v => updateWorker(block.id, worker.id, { name: v })}
@@ -182,8 +213,14 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
                         exclude={others}
                       />
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => removeWorker(block.id, worker.id)} className="h-6 w-6">
-                      <X className="h-3 w-3" />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeWorker(block.id, worker.id)}
+                      className="h-10 w-10 shrink-0"
+                      aria-label="Убрать работника"
+                    >
+                      <X className="h-4 w-4" />
                     </Button>
                   </div>
                 );
@@ -194,17 +231,18 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
           {/* Baking Section */}
           <div className="rounded-md border p-3 bg-orange-50/50">
             <Label className="text-xs font-semibold text-orange-700 mb-2 block">Выпечка</Label>
-            <div className="grid grid-cols-2 gap-2">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-[8rem_1fr] gap-3">
+              <div className="space-y-1">
                 <Label className="text-xs text-muted-foreground">Время</Label>
                 <Input
                   value={block.bakingTime}
                   onChange={e => updateBlock(block.id, { bakingTime: e.target.value })}
                   placeholder="10.45"
-                  className="h-8 text-sm"
+                  className="h-10 text-base sm:text-sm"
+                  inputMode="decimal"
                 />
               </div>
-              <div>
+              <div className="space-y-1">
                 <Label className="text-xs text-muted-foreground">Работники</Label>
                 <WorkerMultiSelect
                   values={block.bakingWorkers}
@@ -216,13 +254,13 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
           </div>
 
           {/* Extra Sections */}
-          <div>
+          <div className="space-y-1">
             <Label className="text-xs text-muted-foreground">Дополнительно</Label>
             <textarea
               value={block.extraSections}
               onChange={e => updateBlock(block.id, { extraSections: e.target.value })}
               placeholder="Доп. секции..."
-              className="flex min-h-[60px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-y"
+              className="flex min-h-[60px] w-full rounded-md border border-input bg-background px-3 py-2 text-base sm:text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-y"
               rows={2}
             />
           </div>

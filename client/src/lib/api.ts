@@ -2,19 +2,40 @@ import type { Schedule, Template, WorkerOption } from '@/types/schedule';
 
 const API_BASE = '/api';
 
+export class ApiError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${url}`, {
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     ...options,
   });
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(error || res.statusText);
+    const error = await res.text().catch(() => res.statusText);
+    throw new ApiError(error || res.statusText, res.status);
   }
+  if (res.status === 204) return undefined as T;
   return res.json();
 }
 
 export const api = {
+  // Auth
+  auth: {
+    login: (data: { username: string; password: string }) =>
+      request<{ ok: boolean; username: string }>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    logout: () => request<{ ok: boolean }>('/auth/logout', { method: 'POST' }),
+    me: () => request<{ username: string }>('/auth/me'),
+  },
+
   // Schedules
   getSchedules: () => request<Schedule[]>('/schedules'),
   getSchedule: (id: string) => request<Schedule>(`/schedules/${id}`),

@@ -69,7 +69,7 @@ export const WorkersPanel: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       <Card>
         <CardHeader className="pb-2">
           <h3 className="font-semibold text-sm">Добавить работника</h3>
@@ -78,14 +78,14 @@ export const WorkersPanel: React.FC = () => {
           </p>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
-            <div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
+            <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Сокращение *</Label>
               <Input
                 value={draft.shortName}
                 onChange={e => setDraft({ ...draft, shortName: e.target.value })}
                 placeholder="ПГ"
-                className="h-8 text-sm"
+                className="h-10 text-base sm:text-sm"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -94,13 +94,13 @@ export const WorkersPanel: React.FC = () => {
                 }}
               />
             </div>
-            <div>
+            <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Имя</Label>
               <Input
                 value={draft.name}
                 onChange={e => setDraft({ ...draft, name: e.target.value })}
                 placeholder="Полина Г."
-                className="h-8 text-sm"
+                className="h-10 text-base sm:text-sm"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -109,13 +109,13 @@ export const WorkersPanel: React.FC = () => {
                 }}
               />
             </div>
-            <div>
+            <div className="space-y-1 col-span-2 sm:col-span-1">
               <Label className="text-xs text-muted-foreground">Должность</Label>
               <Input
                 value={draft.position}
                 onChange={e => setDraft({ ...draft, position: e.target.value })}
                 placeholder="пекарь"
-                className="h-8 text-sm"
+                className="h-10 text-base sm:text-sm"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -124,7 +124,11 @@ export const WorkersPanel: React.FC = () => {
                 }}
               />
             </div>
-            <Button onClick={handleAdd} disabled={!draft.shortName.trim()} className="h-8">
+            <Button
+              onClick={handleAdd}
+              disabled={!draft.shortName.trim()}
+              className="h-10 col-span-2 sm:col-span-1"
+            >
               <Plus className="h-4 w-4 mr-1" /> Добавить
             </Button>
           </div>
@@ -143,37 +147,37 @@ export const WorkersPanel: React.FC = () => {
               Список пуст. Добавьте работников выше — после этого их можно будет выбирать в редакторе.
             </p>
           ) : (
-            <ul className="divide-y">
+            <ul className="divide-y -mx-3 sm:mx-0">
               {sorted.map(w => {
                 const isEditing = editingId === w.id;
                 if (isEditing) {
                   return (
-                    <li key={w.id} className="py-2">
-                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
+                    <li key={w.id} className="py-3 px-3 sm:px-0">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
                         <Input
                           value={editDraft.shortName}
                           onChange={e => setEditDraft({ ...editDraft, shortName: e.target.value })}
                           placeholder="Сокращение"
-                          className="h-8 text-sm"
+                          className="h-10 text-base sm:text-sm"
                         />
                         <Input
                           value={editDraft.name}
                           onChange={e => setEditDraft({ ...editDraft, name: e.target.value })}
                           placeholder="Имя"
-                          className="h-8 text-sm"
+                          className="h-10 text-base sm:text-sm"
                         />
                         <Input
                           value={editDraft.position}
                           onChange={e => setEditDraft({ ...editDraft, position: e.target.value })}
                           placeholder="Должность"
-                          className="h-8 text-sm"
+                          className="h-10 text-base sm:text-sm col-span-2 sm:col-span-1"
                         />
-                        <div className="flex gap-1">
-                          <Button onClick={saveEdit} size="sm" className="h-8 flex-1">
-                            <Save className="h-3 w-3 mr-1" /> Сохранить
+                        <div className="flex gap-1 col-span-2 sm:col-span-1">
+                          <Button onClick={saveEdit} size="sm" className="h-10 flex-1">
+                            <Save className="h-4 w-4 mr-1" /> Сохранить
                           </Button>
-                          <Button onClick={cancelEdit} variant="outline" size="sm" className="h-8">
-                            <X className="h-3 w-3" />
+                          <Button onClick={cancelEdit} variant="outline" size="sm" className="h-10 w-10 p-0">
+                            <X className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
@@ -181,10 +185,10 @@ export const WorkersPanel: React.FC = () => {
                   );
                 }
                 return (
-                  <li key={w.id} className="py-2 flex items-center gap-3">
-                    <span className="font-mono font-semibold text-sm w-16">{w.shortName}</span>
-                    <span className="text-sm flex-1">
-                      {w.name}
+                  <li key={w.id} className="py-2.5 px-3 sm:px-0 flex items-center gap-2 sm:gap-3">
+                    <span className="font-mono font-semibold text-sm w-12 sm:w-16 shrink-0">{w.shortName}</span>
+                    <span className="text-sm flex-1 min-w-0 truncate">
+                      <span className="truncate">{w.name}</span>
                       {w.position && (
                         <span className="ml-2 text-xs text-muted-foreground">· {w.position}</span>
                       )}
@@ -193,17 +197,19 @@ export const WorkersPanel: React.FC = () => {
                       variant="ghost"
                       size="icon"
                       onClick={() => startEdit(w.id)}
-                      className="h-7 w-7"
+                      className="h-9 w-9 shrink-0"
+                      aria-label="Изменить"
                     >
-                      <Pencil className="h-3.5 w-3.5" />
+                      <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => deleteWorkerOption(w.id)}
-                      className="h-7 w-7 text-destructive"
+                      className="h-9 w-9 shrink-0 text-destructive"
+                      aria-label="Удалить"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </li>
                 );
