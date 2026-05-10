@@ -11,6 +11,7 @@ import { WorkerMultiSelect } from './WorkerMultiSelect';
 import { TimePicker } from './TimePicker';
 import { WorkTypeSelect } from './WorkTypeSelect';
 import type { ScheduleBlock } from '@/types/schedule';
+import { getShiftDefaults, STANDARD_TIMES } from '@/types/schedule';
 import { useScheduleStore } from '@/store/scheduleStore';
 
 interface Props {
@@ -25,6 +26,11 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
     setCuttingWorkersCount,
     moveWorker,
   } = useScheduleStore();
+
+  const shiftDefaults = getShiftDefaults(block.order);
+  const kneadDefault = shiftDefaults.kneadTime || STANDARD_TIMES.kneadTime;
+  const cuttingDefault = shiftDefaults.cuttingStartTime || STANDARD_TIMES.cuttingStartTime;
+  const bakingDefault = shiftDefaults.bakingTime || STANDARD_TIMES.bakingTime;
 
   const {
     attributes,
@@ -152,7 +158,7 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
                 <TimePicker
                   value={block.kneadTime}
                   onChange={v => updateBlock(block.id, { kneadTime: v })}
-                  defaultTime="06:10"
+                  defaultTime={kneadDefault}
                   ariaLabel="Время замеса"
                 />
               </div>
@@ -186,7 +192,7 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
                 <TimePicker
                   value={block.cuttingStartTime}
                   onChange={v => updateBlock(block.id, { cuttingStartTime: v })}
-                  defaultTime="08:00"
+                  defaultTime={cuttingDefault}
                   ariaLabel="Начало разделки"
                 />
               </div>
@@ -295,7 +301,7 @@ export const ScheduleBlockCard: React.FC<Props> = ({ block }) => {
                 <TimePicker
                   value={block.bakingTime}
                   onChange={v => updateBlock(block.id, { bakingTime: v })}
-                  defaultTime="10:45"
+                  defaultTime={bakingDefault}
                   ariaLabel="Время выпечки"
                 />
               </div>
