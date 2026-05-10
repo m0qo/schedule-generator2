@@ -71,11 +71,12 @@ function generateBlockText(block: ScheduleBlock): string {
   }
 
   if (block.cuttingWorkers && block.cuttingWorkers.length > 0) {
-    const sortedWorkers = [...block.cuttingWorkers].sort((a, b) => a.position - b.position);
-    for (const worker of sortedWorkers) {
-      if (worker.name) {
-        lines.push(`${worker.position} ${worker.name}`);
-      }
+    const parts = [...block.cuttingWorkers]
+      .sort((a, b) => a.position - b.position)
+      .filter(w => w.name)
+      .map(w => `${w.position}.${w.name}`);
+    if (parts.length > 0) {
+      lines.push(parts.join(' '));
     }
   }
 
