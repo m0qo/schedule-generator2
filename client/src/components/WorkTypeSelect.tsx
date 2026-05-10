@@ -78,7 +78,7 @@ export const WorkTypeSelect: React.FC<Props> = ({ value, onChange, className }) 
           <div
             role="listbox"
             aria-label="Тип работы"
-            className="absolute z-50 mt-1 w-full rounded-md border bg-popover p-1 text-popover-foreground shadow-lg"
+            className="absolute z-50 mt-1 w-full rounded-md border border-slate-700 bg-slate-900 p-1 text-slate-100 shadow-xl ring-1 ring-black/20"
           >
             {WORK_TYPE_FIXED.map(opt => (
               <button
@@ -89,8 +89,8 @@ export const WorkTypeSelect: React.FC<Props> = ({ value, onChange, className }) 
                 aria-selected={opt === value}
                 className={cn(
                   'flex h-10 w-full items-center rounded px-3 text-base sm:text-sm transition-colors',
-                  'hover:bg-accent hover:text-accent-foreground',
-                  opt === value && 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  'text-slate-100 hover:bg-slate-700',
+                  opt === value && 'bg-blue-600 text-white hover:bg-blue-500'
                 )}
               >
                 {opt}
@@ -103,8 +103,8 @@ export const WorkTypeSelect: React.FC<Props> = ({ value, onChange, className }) 
               aria-selected={isOther}
               className={cn(
                 'flex h-10 w-full items-center rounded px-3 text-base sm:text-sm transition-colors',
-                'hover:bg-accent hover:text-accent-foreground',
-                isOther && 'bg-primary text-primary-foreground hover:bg-primary/90'
+                'text-slate-100 hover:bg-slate-700',
+                isOther && 'bg-blue-600 text-white hover:bg-blue-500'
               )}
             >
               {WORK_TYPE_OTHER}

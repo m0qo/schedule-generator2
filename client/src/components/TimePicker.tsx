@@ -73,7 +73,7 @@ export const TimePicker: React.FC<Props> = ({
         <div
           role="listbox"
           aria-label="Варианты времени"
-          className="absolute z-50 mt-1 w-44 rounded-md border bg-popover p-1 text-popover-foreground shadow-lg"
+          className="absolute z-50 mt-1 w-44 rounded-md border border-slate-700 bg-slate-900 p-1 text-slate-100 shadow-xl ring-1 ring-black/20"
         >
           {options.map(opt => {
             const isCurrent = opt === display;
@@ -87,16 +87,16 @@ export const TimePicker: React.FC<Props> = ({
                 aria-selected={isCurrent}
                 className={cn(
                   'flex h-10 w-full items-center justify-between rounded px-3 text-base sm:text-sm transition-colors',
-                  'hover:bg-accent hover:text-accent-foreground',
-                  isCurrent && 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  'text-slate-100 hover:bg-slate-700',
+                  isCurrent && 'bg-blue-600 text-white hover:bg-blue-500'
                 )}
               >
                 <span className="tabular-nums">{opt}</span>
                 {isDefault && !isCurrent && (
-                  <span className="text-xs text-muted-foreground">по умолч.</span>
+                  <span className="text-xs text-slate-400">по умолч.</span>
                 )}
                 {isDefault && isCurrent && (
-                  <span className="text-xs opacity-80">по умолч.</span>
+                  <span className="text-xs text-white/80">по умолч.</span>
                 )}
               </button>
             );
